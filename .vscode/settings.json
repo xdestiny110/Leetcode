@@ -28,6 +28,13 @@
         "type_traits": "cpp",
         "typeinfo": "cpp",
         "utility": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "__hash_table": "cpp",
+        "__node_handle": "cpp",
+        "__tree": "cpp",
+        "cmath": "cpp",
+        "optional": "cpp"
     }
 }
