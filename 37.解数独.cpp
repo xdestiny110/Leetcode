@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <unordered_set>
+#include <algorithm>
 #include <utility>
 
 class Solution {
@@ -26,7 +27,7 @@ public:
             }
         }
 
-        DFS(std::forward<std::vector<std::vector<char>>>(board), 0);
+        DFS(std::move(board), 0);
     }
 private:
 
@@ -41,7 +42,7 @@ private:
         const auto& ch = board[r][c];
 
         if(ch != '.'){
-            DFS(std::forward<std::vector<std::vector<char>>>(board), idx+1);
+            DFS(std::move(board), idx+1);
             return;
         }
         else{
@@ -57,7 +58,7 @@ private:
                     colRec.insert(select);
                     quadRec.insert(select);
                     board[r][c] = select;
-                    DFS(std::forward<std::vector<std::vector<char>>>(board), idx+1);
+                    DFS(std::move(board), idx+1);
                     if(flag){
                         return;
                     }

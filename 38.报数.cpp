@@ -33,30 +33,3 @@ public:
     }
 };
 
-namespace Xdestiny{
-    template<int N>
-    std::string countAndSayTemplateMeta(){
-        std::string ret = countAndSayTemplateMeta<N-1>();
-        auto ch = ret[0];
-        int cnt = 1;
-        std::string r = "";
-        for(int j = 1; j < ret.size(); j++){
-            if(ret[j] != ch){
-                r += std::to_string(cnt)+std::string(1, ch);
-                cnt = 1;
-                ch = ret[j];
-            }
-            else{
-                cnt++;
-            }
-        }
-        r += std::to_string(cnt)+std::string(1, ch);
-        return r;
-    }
-
-    template<>
-    std::string countAndSayTemplateMeta<1>(){
-        return "1";
-    }
-}
-

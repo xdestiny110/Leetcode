@@ -22,9 +22,9 @@ public:
                 if(ch == '.')
                     continue;
                 
-                if(!(checkExist(std::forward<std::unordered_set<char>>(rowRecord[r]), ch)
-                     && checkExist(std::forward<std::unordered_set<char>>(colRecord[c]), ch)
-                     && checkExist(std::forward<std::unordered_set<char>>(quadRecord[r/3*3+c/3]), ch)))
+                if(!(checkExist(std::move(rowRecord[r]), ch)
+                     && checkExist(std::move(colRecord[c]), ch)
+                     && checkExist(std::move(quadRecord[r/3*3+c/3]), ch)))
                 {
                     return false;
                 }

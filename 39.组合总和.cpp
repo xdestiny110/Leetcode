@@ -12,8 +12,7 @@ class Solution {
 public:
     std::vector<std::vector<int>> combinationSum(std::vector<int>& candidates, int target) {
         std::sort(candidates.begin(), candidates.end());
-        std::vector<int> r;
-        DFS(0, target, candidates, 0, std::forward<std::vector<int>>(r));
+        DFS(0, target, candidates, 0, std::vector<int>());
         return result;
     }
 
@@ -34,7 +33,7 @@ private:
                 return;
             
             r.push_back(candidates[i]);
-            DFS(i, target, candidates, sum+candidates[i], std::forward<std::vector<int>>(r));
+            DFS(i, target, candidates, sum+candidates[i], std::move(r));
             r.pop_back();
         }
     }

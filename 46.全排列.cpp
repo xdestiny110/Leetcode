@@ -10,7 +10,7 @@
 class Solution {
 public:
     std::vector<std::vector<int>> permute(std::vector<int>& nums) {
-        DFS(std::forward<std::vector<int>>(nums), {});
+        DFS(std::move(nums), {});
         return result;
     }
 
@@ -25,7 +25,7 @@ private:
             auto temp = *it;
             r.push_back(temp);
             it = nums.erase(it);
-            DFS(std::forward<std::vector<int>>(nums), std::forward<std::vector<int>>(r));
+            DFS(std::move(nums), std::move(r));
             nums.insert(it, temp);
             r.pop_back();
         }
