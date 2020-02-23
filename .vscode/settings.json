@@ -64,6 +64,7 @@
         "system_error": "cpp",
         "deque": "cpp",
         "stack": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "queue": "cpp"
     }
 }
