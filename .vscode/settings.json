@@ -66,6 +66,7 @@
         "stack": "cpp",
         "bit": "cpp",
         "queue": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "numeric": "cpp"
     }
 }
