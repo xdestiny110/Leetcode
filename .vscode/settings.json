@@ -67,6 +67,7 @@
         "bit": "cpp",
         "queue": "cpp",
         "regex": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "map": "cpp"
     }
 }
