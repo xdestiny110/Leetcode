@@ -10,24 +10,25 @@
 class Solution {
 public:
     std::vector<std::vector<int>> permute(std::vector<int>& nums) {
-        DFS(std::move(nums), {});
+        std::vector<uint8_t> used(nums.size(), 0);
+        std::vector<int> r;
+        DFS(nums, used, r);
         return result;
     }
 
 private:
-    void DFS(std::vector<int>&& nums, std::vector<int>&& r){
-        if(nums.empty()){
+    void DFS(const std::vector<int>& nums, std::vector<uint8_t>& used, std::vector<int>& r){
+        if (r.size() == nums.size()) {
             result.push_back(r);
             return;
         }
-
-        for(auto it = nums.begin(); it != nums.end(); it++){
-            auto temp = *it;
-            r.push_back(temp);
-            it = nums.erase(it);
-            DFS(std::move(nums), std::move(r));
-            nums.insert(it, temp);
+        for (int i = 0; i < nums.size(); ++i) {
+            if (used[i] > 0) continue;
+            r.push_back(nums[i]);
+            used[i] = 1;
+            DFS(nums, used, r);
             r.pop_back();
+            used[i] = 0;
         }
     }
 
