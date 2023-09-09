@@ -7,36 +7,44 @@
 // @lc code=start
 
 #include <vector>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
 
 class Solution {
 public:
     bool canFinish(int numCourses, std::vector<std::vector<int>>& prerequisites) {
-        for(const auto& it : prerequisites){
-            auto& v = m[it[0]];
-            v.emplace_back(it[1]);
+        std::unordered_map<int, std::unordered_set<int>> course_deps;
+        for (int i = 0; i < numCourses; ++i) {
+            course_deps[i] = {};
+        }
+        for (const auto& pres : prerequisites) {
+            course_deps[pres[0]].insert(pres[1]);
         }
 
-        for(const auto& [k, v] : m){
-            if(!DFS(k, {k})){
-                return false;
+        std::map<int, std::unordered_set<int>> indegree_course;
+        std::unordered_map<int, std::unordered_set<int>> course_after;
+        for (const auto& [course, pres] : course_deps) {
+            indegree_course[pres.size()].insert(course);
+            for (auto pre : pres) {
+                course_after[pre].insert(course);
             }
         }
-        return true;
-    }
 
-private:
-    std::unordered_map<int, std::vector<int>> m;
-    bool DFS(int key, std::unordered_set<int>&& s){
-        if(m.find(key) == m.end()) return true;
-        for(const auto& it : m[key]){
-            if(s.find(it) != s.end()) return false;
-            s.insert(it);
-            if(!DFS(it, std::move(s))) return false;
-            s.erase(it);
+        while (!indegree_course.empty() && !indegree_course[0].empty()) {
+            for (auto course : indegree_course[0]) {
+                for (auto after : course_after[course]) {
+                    course_deps[after].erase(course);
+                }
+                course_deps.erase(course);
+            }
+            indegree_course.clear();
+            for (const auto& [course, pres] : course_deps) {
+                indegree_course[pres.size()].insert(course);
+            }
         }
-        return true;
+
+        return indegree_course.empty();
     }
 };
 // @lc code=end
