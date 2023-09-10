@@ -7,65 +7,47 @@
 // @lc code=start
 
 #include <vector>
+#include <queue>
 #include <unordered_map>
 #include <unordered_set>
 
 class Solution {
 public:
     std::vector<int> findOrder(int numCourses, std::vector<std::vector<int>>& prerequisites) {
-        s.reserve(numCourses);
-        m.reserve(numCourses);
-        for(int i = 0; i < numCourses; ++i){
-            auto& mm = m[i];
+        std::unordered_map<int, std::unordered_set<int>> course_deps;
+        std::unordered_map<int, std::unordered_set<int>> course_posts;
+        for (int i = 0; i < numCourses; ++i) {
+            course_deps[i] = {};
+            course_posts[i] = {};
         }
 
-        for(auto&& it : prerequisites){
-            m[it[0]].first.emplace_back(it[1]);
-            m[it[1]].second++;
+        for (const auto& pres : prerequisites) {
+            course_deps[pres[0]].insert(pres[1]);
+            course_posts[pres[1]].insert(pres[0]);
         }
 
-        for(const auto& it: m){
-            if(it.second.second == 0){
-                if(!DFS(it.first)){
-                    return {};
+        std::queue<int> indegree_zero_courses;
+        for (int i = 0; i < numCourses; ++i) {
+            if (course_deps[i].empty()) {
+                indegree_zero_courses.push(i);
+            }
+        }
+
+        std::vector<int> result;
+        while (!indegree_zero_courses.empty()) {
+            auto course = indegree_zero_courses.front();
+            result.push_back(course);
+            indegree_zero_courses.pop();
+            for (auto course_post : course_posts[course]) {
+                course_deps[course_post].erase(course);
+                if (course_deps[course_post].empty()) {
+                    indegree_zero_courses.push(course_post);
                 }
             }
+            course_posts.erase(course);
         }
 
-        if(s.size() != numCourses) return {};
-
-        return s;
-    }
-
-private:
-    std::unordered_map<int, std::pair<std::vector<int>, int>> m;
-    std::unordered_set<int> circleDetect;
-    std::unordered_set<int> sRecord;
-    std::vector<int> s;
-
-    bool DFS(int num){
-        if(m.find(num) == m.end()){
-            s.emplace_back(num);
-            sRecord.insert(num);
-            return true;
-        }
-
-        for(const auto& it : m[num].first){
-            if(circleDetect.find(it) != circleDetect.end()){
-                return false;
-            }
-            if(sRecord.find(it) != sRecord.end()){
-                continue;
-            }
-            circleDetect.insert(it);
-            if(!DFS(it)){
-                return false;
-            }
-            circleDetect.erase(it);
-        }
-        s.emplace_back(num);
-        sRecord.insert(num);
-        return true;
+        return course_posts.empty() ? result : std::vector<int>{};
     }
 };
 // @lc code=end
