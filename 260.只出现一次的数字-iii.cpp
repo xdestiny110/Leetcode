@@ -9,7 +9,7 @@
 class Solution {
 public:
     vector<int> singleNumber(vector<int>& nums) {
-        int xXORy = 0;
+        uint64_t xXORy = 0;
         for(const auto& it : nums){
             xXORy ^= it;
         }
