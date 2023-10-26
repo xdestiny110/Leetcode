@@ -5,42 +5,20 @@
  */
 
 #include <vector>
+#include <algorithm>
 
 class Solution {
 public:
     std::vector<int> searchRange(std::vector<int>& nums, int target) {
-        if(nums.empty())
-            return std::vector<int>{-1, -1};
-        return binarySearch(nums, target, 0, nums.size()-1);
-    }
-private:
-    std::vector<int> binarySearch(const std::vector<int>& nums, int target, int left, int right){
-        if(nums[left] == target)
-            return findLR(nums, target, left);
-        if(nums[right] == target)
-            return findLR(nums, target, right);
-        
-        if(right - left <= 1)
-            return std::vector<int>{-1, -1};
-        int pos = (left+right)/2;
-        if(nums[pos] > target)
-            return binarySearch(nums, target, left, pos);
-        return binarySearch(nums, target, pos, right);
-    }
-
-    std::vector<int> findLR(const std::vector<int>& nums, int target, int bound){
-        int i = bound;
-        while(i >= 0 && nums[i] == target){
-            i--;
+        auto l_it = std::lower_bound(nums.begin(), nums.end(), target);
+        auto r_it = std::upper_bound(nums.begin(), nums.end(), target);
+        std::vector<int> result(2, -1);
+        if (l_it != nums.end() && *l_it == target) {
+            result[0] = std::distance(nums.begin(), l_it);
+            std::advance(r_it, -1);
+            result[1] = std::distance(nums.begin(), r_it);
         }
-        int start = i+1;
-
-        i = bound;
-        while (i < nums.size() && nums[i] == target){
-            i++;
-        }
-        int end = i-1;
-        return std::vector<int>{start, end};
+        return result;
     }
 };
 
