@@ -17,29 +17,23 @@ public:
         int tail = citations.size();
         while (head < tail - 1) {
             auto mid = (head + tail) / 2;
-            auto cnt = paper_count(citations, mid);
-            if (mid < cnt) {
+            auto cnt = paper_cnt(citations, mid);
+            if (cnt == mid) return cnt;
+            if (cnt > mid) {
                 head = mid;
             } else {
                 tail = mid;
             }
         }
-        return paper_count(citations, tail) >= tail ? tail : head;
+        auto tail_cnt = paper_cnt(citations, tail);
+        if (tail_cnt >= tail) return tail;
+        return head;
     }
 
 private:
-    int paper_count(const std::vector<int>& citations, int h) const {
-        int head = 0;
-        int tail = citations.size();
-        while (head < tail - 1) {
-            auto mid = (head + tail) / 2;
-            if (citations[mid] < h) {
-                head = mid;
-            } else {
-                tail = mid;
-            }
-        }
-        return citations[head] >= h ? citations.size() - head : citations.size() - tail;
+    int paper_cnt(const std::vector<int>& citations, int h) const {
+        auto it = std::lower_bound(citations.begin(), citations.end(), h);
+        return std::distance(it, citations.end());
     }
 };
 // @lc code=end
