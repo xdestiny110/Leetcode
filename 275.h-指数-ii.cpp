@@ -21,25 +21,13 @@ public:
                 tail = mid;
             }
         }
-
         return paper_count(citations, tail) >= tail ? tail : head;
     }
 
-// [4,4,4,4] 2/3/4
-
 private:
     int paper_count(const std::vector<int>& citations, int h) const {
-        int head = 0;
-        int tail = citations.size();
-        while (head < tail - 1) {
-            auto mid = (head + tail) / 2;
-            if (citations[mid] < h) {
-                head = mid;
-            } else {
-                tail = mid;
-            }
-        }
-        return citations[head] >= h ? citations.size() - head : citations.size() - tail;
+        auto it = std::lower_bound(citations.begin(), citations.end(), h);
+        return std::distance(it, citations.end());
     }
 
 };
