@@ -30,9 +30,8 @@ public:
 class Solution {
 public:
     std::vector<int> postorder(Node* root) {
-        if (root) {
-            dfs(root);
-        }
+        if (!root) return {};
+        dfs(root);
         return result_;
     }
 
